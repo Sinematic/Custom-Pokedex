@@ -26,7 +26,8 @@ async function getData() {
         const types = document.createElement("p");
         types.classList.add("pokemon-types");
 
-
+        const typesDiv = document.createElement("div");
+        typesDiv.classList.add("pokemon-types-div");
 
         if (pokemons[i].apiTypes.length === 1) {
 
@@ -35,36 +36,58 @@ async function getData() {
             const typeImg = document.createElement("img");
             typeImg.src = pokemons[i].apiTypes[0].image;
             typeImg.classList.add("pokemon-types-img");
-            card.appendChild(typeImg);  
+            typesDiv.appendChild(typeImg);  
 
         } else {
 
             types.innerText = `${pokemons[i].apiTypes[0].name} - ${pokemons[i].apiTypes[1].name}`;
+
             for(let i = 0; i < 2; i++)
             {
                 const typeImg = document.createElement("img");
                 typeImg.src = pokemons[i].apiTypes[i].image;
                 typeImg.classList.add("pokemon-types-img");
-                card.appendChild(typeImg);    
-
+                typesDiv.appendChild(typeImg);      
+                card.appendChild(typesDiv);
             }
         }
 
+        card.appendChild(typesDiv);
         card.appendChild(types);  
   
-
         const stats = document.createElement("ol");
         stats.classList.add("pokemon-stats");
         card.appendChild(stats);
 
-        const stat = document.createElement("li");
-        stat.classList.add("pokemon-stat-li");
-        pokemons.stats
+        const HP = document.createElement("li");
+        HP.classList.add("pokemon-stat-li");
+        HP.innerText = `HP : ${pokemons[i].stats["HP"]}`;
+        stats.appendChild(HP);
 
-        /*
-        stat.innerText = pokemons[i].name;
-        name.classList.add("pokemon-name");
-        card.appendChild(name);  */  
+        const attack = document.createElement("li");
+        attack.classList.add("pokemon-stat-li");
+        attack.innerText = `Attaque : ${pokemons[i].stats["attack"]}`;
+        stats.appendChild(attack);
+
+        const defense = document.createElement("li");
+        defense.classList.add("pokemon-stat-li");
+        defense.innerText = `Défense : ${pokemons[i].stats["defense"]}`;
+        stats.appendChild(defense);
+
+        const specialAttack = document.createElement("li");
+        specialAttack.classList.add("pokemon-stat-li");
+        specialAttack.innerText = `Attaque spéciale : ${pokemons[i].stats["special_attack"]}`;
+        stats.appendChild(specialAttack);
+
+        const specialDefense = document.createElement("li");
+        specialDefense.classList.add("pokemon-stat-li");
+        specialDefense.innerText = `Défense spéciale : ${pokemons[i].stats["special_defense"]}`;
+        stats.appendChild(specialDefense);
+
+        const speed = document.createElement("li");
+        speed.classList.add("pokemon-stat-li");
+        speed.innerText = `Vitesse : ${pokemons[i].stats["speed"]}`;
+        stats.appendChild(speed);
 
             
     } 
