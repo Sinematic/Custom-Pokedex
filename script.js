@@ -1,5 +1,14 @@
 const pokedex = document.getElementById("pokedex");
 
+
+const legendaries = [
+    144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 
+    381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 
+    638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 772, 
+    773, 785, 786, 787, 788, 791, 792, 800, 888, 889, 890, 891, 892, 
+    894, 895, 896, 897, 898];
+
+
 async function getData() {
 
     const url = "https://pokebuildapi.fr/api/v1/pokemon";
@@ -11,7 +20,11 @@ async function getData() {
     {
         const card = document.createElement("article");
         card.classList.add("pokemon-card");
+        card.setAttribute("id", `pokemon${pokemons[i].id}`);
+        card.setAttribute("data-gen", pokemons[i].apiGeneration);
         pokedex.appendChild(card);
+
+        console.log(card.getAttribute("data-gen"));
 
         const image = document.createElement("img");
         image.src = pokemons[i].image;
@@ -48,8 +61,7 @@ async function getData() {
                 typeImg.src = pokemons[i].apiTypes[i].image;
                 typeImg.classList.add("pokemon-types-img");
                 typeImg.classList.add("pokemo-duo-types");
-                typesDiv.appendChild(typeImg);      
-                card.appendChild(typesDiv);
+                typesDiv.appendChild(typeImg);
             }
         }
 
@@ -90,8 +102,45 @@ async function getData() {
         speed.innerText = `Vitesse : ${pokemons[i].stats["speed"]}`;
         stats.appendChild(speed);
       
-    } 
+    }
+
+    for (let i = 0; i <= legendaries.length -1; i++)
+    {
+        const card = document.getElementById(legendaries[i]);
+        card.setAttribute("data-legendary", true);
+    }
 
 }
 
-getData();
+try {
+
+    getData();
+
+} catch(error) {
+
+    console.error(error);
+}
+
+/*
+
+async function displayLegendaries() {
+
+    const url = "https://pokebuildapi.fr/api/v1/pokemon";
+    const reponse = await fetch(url);
+    const pokemons = await reponse.json();
+
+    for (let i = 0; i <= pokemons.length -1; i++)
+    {
+        const card = document.getElementById(i);
+        card.dataset("data-leg") === true ? "" : card.style.display = "none";
+    }
+
+}
+
+*/
+
+const btnLegendary = document.getElementById("btn-legendaries");
+
+btnLegendary.addEventListener("click", function() {
+    displayLegendaries();
+});
