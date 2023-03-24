@@ -47,6 +47,7 @@ async function getData() {
                 const typeImg = document.createElement("img");
                 typeImg.src = pokemons[i].apiTypes[i].image;
                 typeImg.classList.add("pokemon-types-img");
+                typeImg.classList.add("pokemo-duo-types");
                 typesDiv.appendChild(typeImg);      
                 card.appendChild(typesDiv);
             }
@@ -88,12 +89,8 @@ async function getData() {
         speed.classList.add("pokemon-stat-li");
         speed.innerText = `Vitesse : ${pokemons[i].stats["speed"]}`;
         stats.appendChild(speed);
-
-            
+      
     } 
-
-    
-    console.log(pokemons[2].stats[2]);
 
 }
 
