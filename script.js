@@ -1,6 +1,5 @@
 const pokedex = document.getElementById("pokedex");
 
-
 const legendaries = [
     144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 
     381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 
@@ -22,6 +21,7 @@ async function getData() {
         card.classList.add("pokemon-card");
         card.setAttribute("id", `pokemon${pokemons[i].id}`);
         card.setAttribute("data-gen", pokemons[i].apiGeneration);
+        card.setAttribute("data-legendary", false);
         pokedex.appendChild(card);
 
         console.log(card.getAttribute("data-gen"));
@@ -69,7 +69,7 @@ async function getData() {
         card.appendChild(types);  
   
         const stats = document.createElement("ol");
-        stats.classList.add("pokemon-stats");
+        stats.classList.add("pokemon-stats", "hidden");
         card.appendChild(stats);
 
         const HP = document.createElement("li");
@@ -106,9 +106,10 @@ async function getData() {
 
     for (let i = 0; i <= legendaries.length -1; i++)
     {
-        const card = document.getElementById(legendaries[i]);
-        card.setAttribute("data-legendary", true);
+        const card = document.getElementById(`pokemon${legendaries[i]}`);
+        card.setAttribute("data-legendary", 1);
     }
+
 
 }
 
@@ -121,26 +122,118 @@ try {
     console.error(error);
 }
 
-/*
 
 async function displayLegendaries() {
 
-    const url = "https://pokebuildapi.fr/api/v1/pokemon";
-    const reponse = await fetch(url);
-    const pokemons = await reponse.json();
+    const cards = document.querySelectorAll(".pokemon-card");
 
-    for (let i = 0; i <= pokemons.length -1; i++)
+    for (let i = 0; i <= cards.length; i++)
     {
-        const card = document.getElementById(i);
-        card.dataset("data-leg") === true ? "" : card.style.display = "none";
+        const card = document.getElementById(`pokemon${i}`);
+        
+        console.log(card.getAttribute("data-gen"));
+/*
+        if (card.dataset("data-legendary") === true)
+        {
+            card.style.display = "block";
+        } else {
+            card.style.display = "else";
+        }*/
     }
+
+/*
+    const stats = document.querySelectorAll(".pokemon-stats");
+
+    for (let i = 0; i < stats.length; i++)
+    {
+        stats[i].classList.add("hidden");
+    }
+
+    btnStatsHidden.style.display = "block";
+    btnStatsDisplayed.style.display = "none";*/
 
 }
 
-*/
 
 const btnLegendary = document.getElementById("btn-legendaries");
 
 btnLegendary.addEventListener("click", function() {
     displayLegendaries();
+});
+
+const btnStatsHidden = document.getElementById("btn-stats-hidden");
+const btnStatsDisplayed = document.getElementById("btn-stats-displayed");
+
+function displayStats() {
+
+    const stats = document.querySelectorAll(".pokemon-stats");
+
+    for (let i = 0; i < stats.length; i++)
+    {
+        stats[i].classList.remove("hidden");
+    }
+
+    btnStatsHidden.style.display = "none";
+    btnStatsDisplayed.style.display = "block";
+
+}
+
+function hideStats() {
+
+    const stats = document.querySelectorAll(".pokemon-stats");
+
+    for (let i = 0; i < stats.length; i++)
+    {
+        stats[i].classList.add("hidden");
+    }
+
+    btnStatsHidden.style.display = "block";
+    btnStatsDisplayed.style.display = "none";
+
+}
+
+btnStatsHidden.addEventListener("click", function() {
+    displayStats();
+});
+
+btnStatsDisplayed.addEventListener("click", function() {
+    hideStats();
+});
+/*
+function displayFirstGen() {
+
+}*/
+
+const btnReset = document.getElementById("reset");
+
+btnReset.addEventListener("click", function() {
+
+    getData();
+});
+
+function displayGen(int) {
+
+    const cards = document.querySelectorAll(".pokemon-cards");
+    
+    for (let i = 0; i <= cards.length; i++)
+    {
+        const card = document.getElementById(`pokemon${i}`);
+        let gen = card.dataset.gen;
+
+        switch(gen)
+        {
+            case int !== gen : 
+                card.style.display = "none";
+                break;
+            default:
+                card.style.display = "block";
+        }
+    }
+    
+}
+
+const btnFirstGen = document.getElementById("gen-1");
+
+btnFirstGen.addEventListener("click", function() {
+    displayGen(1);
 });

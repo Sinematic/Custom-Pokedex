@@ -7,7 +7,7 @@
 
 }
 
-body, header, div, nav, a, p, main , ul, ol, li, main, section, article, h1, h2, h3, h4, span {
+body, header, div, nav, a, p, main , ul, ol, li, main, section, article, h1, h2, h3, h4, span, button {
     margin: 0;
 }
 
@@ -120,7 +120,7 @@ nav a:hover {
 
 #pokedex {
     display: grid;
-    padding: 0 60px 0 60px;
+    padding: 60px 60px 0 60px;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(auto, 200px);
     gap: 40px;
@@ -172,10 +172,6 @@ nav a:hover {
     padding-right: 12px;
 }
 
-.pokemon-stats {
-    display: none;
-}
-
 .pokemon-stat-li {
     font-size: 14px;
 }
@@ -187,10 +183,29 @@ nav a:hover {
     padding: 8px 0px 5px 0px;
 }
 
-/*
-.pokemon-stats {
-
+#btn-stats-displayed {
+    display: none;
 }
 
+#filters {
+    max-width: 100%;
+    padding: 30px 10px;
+    min-height: 75px;
+    background-color: var(--secondary-color);
+    border: 4px solid var(--alt-color);
+    border-bottom: 4px solid var(--alt-color);
+}
 
-*/
+button {
+    border: 2px solid var(--alt-color);
+    background-color: var(--main-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    padding: 12px 8px;
+    width: auto;
+    border-radius: 15px;
+}
+
+.hidden {
+    display: none;
+}
