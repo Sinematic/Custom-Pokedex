@@ -39,13 +39,9 @@
         <main>
 
             <section id="filters">
-                <button id="btn-legendaries">Afficher les pokémons légendaires</button>
-                <button id="btn-stats-displayed">Cacher les statistiques</button>
-                <button id="btn-stats-hidden">Afficher les statistiques</button>
-                <button id="reset">Réinitialiser les filtres</button>
-        
+
                 <select name="gen" id="gen">
-                    <option id="all-gen" value="all">Afficher toutes les générations</option>
+                    <option id="0">Afficher toutes les générations</option>
                     <option id="gen-1" value="1">Afficher la première génération</option>
                     <option id="gen-2" value="2">Afficher la deuxième génération</option>
                     <option id="gen-3" value="3">Afficher la troisième génération</option>
@@ -55,11 +51,19 @@
                     <option id="gen-7" value="7">Afficher la septième génération</option>
                     <option id="gen-8" value="8">Afficher la huitième génération</option>
                 </select>
+                
+                <button id="btn-stats-displayed">Cacher les statistiques</button>
+                <button id="btn-stats-hidden">Afficher les statistiques</button>
+                
+                <button id="btn-legendaries">Afficher les pokémons légendaires</button>
 
-                <label for="search">
+                <input name="search" type="search" id="search" placeholder="Rechercher un pokémon">
+                <button type="submit" id="submit">
                     <i id="glass" class="fa-solid fa-magnifying-glass"></i>
-                    <input name="search" type="search" id="search" placeholder="Rechercher un pokémon">
-                </label>
+                </button>
+
+                
+                <button id="reset">Réinitialiser les filtres</button>
 
             </section>
 

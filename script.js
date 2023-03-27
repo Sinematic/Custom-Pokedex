@@ -8,7 +8,7 @@ const legendaries = [
     894, 895, 896, 897, 898];
 
 
-async function getData(url = "https://pokebuildapi.fr/api/v1/pokemon") {
+async function getData(url = "https://pokebuildapi.fr/api/v1/pokemon/") {
 
     const reponse = await fetch(url);
     const pokemons = await reponse.json();
@@ -17,92 +17,7 @@ async function getData(url = "https://pokebuildapi.fr/api/v1/pokemon") {
 
     for (let i = 0; i < pokemons.length; i++)
     {
-        const card = document.createElement("article");
-        card.classList.add("pokemon-card");
-        card.setAttribute("id", `pokemon${pokemons[i].id}`);
-        pokedex.appendChild(card);
-
-        const image = document.createElement("img");
-        image.src = pokemons[i].image;
-        image.classList.add("pokemon-img");
-        card.appendChild(image);
-
-        const name = document.createElement("h3");
-        name.innerText = `${pokemons[i].name} (00${pokemons[i].pokedexId})`;
-        name.classList.add("pokemon-name");
-        card.appendChild(name);    
-
-        const types = document.createElement("p");
-        types.classList.add("pokemon-types");
-
-        const typesDiv = document.createElement("div");
-        typesDiv.classList.add("pokemon-types-div");
-
-        if (pokemons[i].apiTypes.length === 1) {
-
-            types.innerText = pokemons[i].apiTypes[0].name;
-
-            const typeImg = document.createElement("img");
-            typeImg.src = pokemons[i].apiTypes[0].image;
-            typeImg.classList.add("pokemon-types-img");
-            typesDiv.appendChild(typeImg);  
-
-        } else {
-
-            types.innerText = `${pokemons[i].apiTypes[0].name} - ${pokemons[i].apiTypes[1].name}`;
-
-            for(let j = 0; j < 2; j++)
-            {
-                const typeImg = document.createElement("img");
-                typeImg.src = pokemons[i].apiTypes[j].image;
-                typeImg.classList.add("pokemon-types-img");
-                typeImg.classList.add("pokemo-duo-types");
-                typesDiv.appendChild(typeImg);
-            }
-        }
-
-        card.appendChild(typesDiv);
-        card.appendChild(types);  
-  
-        const stats = document.createElement("ol");
-        stats.classList.add("pokemon-stats", "hidden");
-        card.appendChild(stats);
-
-        const HP = document.createElement("li");
-        HP.classList.add("pokemon-stat-li");
-        HP.innerText = `HP : ${pokemons[i].stats["HP"]}`;
-        stats.appendChild(HP);
-
-        const attack = document.createElement("li");
-        attack.classList.add("pokemon-stat-li");
-        attack.innerText = `Attaque : ${pokemons[i].stats["attack"]}`;
-        stats.appendChild(attack);
-
-        const defense = document.createElement("li");
-        defense.classList.add("pokemon-stat-li");
-        defense.innerText = `Défense : ${pokemons[i].stats["defense"]}`;
-        stats.appendChild(defense);
-
-        const specialAttack = document.createElement("li");
-        specialAttack.classList.add("pokemon-stat-li");
-        specialAttack.innerText = `Attaque spéciale : ${pokemons[i].stats["special_attack"]}`;
-        stats.appendChild(specialAttack);
-
-        const specialDefense = document.createElement("li");
-        specialDefense.classList.add("pokemon-stat-li");
-        specialDefense.innerText = `Défense spéciale : ${pokemons[i].stats["special_defense"]}`;
-        stats.appendChild(specialDefense);
-
-        const speed = document.createElement("li");
-        speed.classList.add("pokemon-stat-li");
-        speed.innerText = `Vitesse : ${pokemons[i].stats["speed"]}`;
-        stats.appendChild(speed);
-      
-    }
-
-    for (let i = 0; i <= legendaries.length -1; i++)
-    {
-        const card = document.getElementById(`pokemon${legendaries[i]}`);
+        generatePokedex(pokemons[i]);
     }
 }
 
@@ -116,10 +31,133 @@ try {
     console.error(error);
 }
 
-const btnGen = document.getElementById("gen");
+function generatePokedex(pokemon) {
 
-btnGen.addEventListener("change", function() {
-    getData(`https://pokebuildapi.fr/api/v1/pokemon/generation/${btnGen.value}`)
+    const card = document.createElement("article");
+    card.classList.add("pokemon-card");
+    card.setAttribute("id", `pokemon${pokemon.id}`);
+    pokedex.appendChild(card);
+
+    const image = document.createElement("img");
+    image.src = pokemon.image;
+    image.classList.add("pokemon-img");
+    card.appendChild(image);
+
+    const name = document.createElement("h3");
+    name.innerText = `${pokemon.name} (00${pokemon.pokedexId})`;
+    name.classList.add("pokemon-name");
+    card.appendChild(name);    
+
+    const types = document.createElement("p");
+    types.classList.add("pokemon-types");
+
+    const typesDiv = document.createElement("div");
+    typesDiv.classList.add("pokemon-types-div");
+
+    if (pokemon.apiTypes.length === 1) {
+
+            types.innerText = pokemon.apiTypes[0].name;
+
+            const typeImg = document.createElement("img");
+            typeImg.src = pokemon.apiTypes[0].image;
+            typeImg.classList.add("pokemon-types-img");
+            typesDiv.appendChild(typeImg);  
+
+    } else {
+
+            types.innerText = `${pokemon.apiTypes[0].name} - ${pokemon.apiTypes[1].name}`;
+
+            for(let j = 0; j < 2; j++)
+            {
+                const typeImg = document.createElement("img");
+                typeImg.src = pokemon.apiTypes[j].image;
+                typeImg.classList.add("pokemon-types-img");
+                typeImg.classList.add("pokemo-duo-types");
+                typesDiv.appendChild(typeImg);
+            }
+    }
+
+    card.appendChild(typesDiv);
+    card.appendChild(types);  
+  
+    const stats = document.createElement("ol");
+    stats.classList.add("pokemon-stats", "hidden");
+    card.appendChild(stats);
+
+    const HP = document.createElement("li");
+    HP.classList.add("pokemon-stat-li");
+    HP.innerText = `HP : ${pokemon.stats["HP"]}`;
+    stats.appendChild(HP);
+
+    const attack = document.createElement("li");
+    attack.classList.add("pokemon-stat-li");
+    attack.innerText = `Attaque : ${pokemon.stats["attack"]}`;
+    stats.appendChild(attack);
+
+    const defense = document.createElement("li");
+    defense.classList.add("pokemon-stat-li");
+    defense.innerText = `Défense : ${pokemon.stats["defense"]}`;
+    stats.appendChild(defense);
+
+    const specialAttack = document.createElement("li");
+    specialAttack.classList.add("pokemon-stat-li");
+    specialAttack.innerText = `Attaque spéciale : ${pokemon.stats["special_attack"]}`;
+    stats.appendChild(specialAttack);
+
+    const specialDefense = document.createElement("li");
+    specialDefense.classList.add("pokemon-stat-li");
+    specialDefense.innerText = `Défense spéciale : ${pokemon.stats["special_defense"]}`;
+    stats.appendChild(specialDefense);
+
+    const speed = document.createElement("li");
+    speed.classList.add("pokemon-stat-li");
+    speed.innerText = `Vitesse : ${pokemon.stats["speed"]}`;
+    stats.appendChild(speed);
+
+}
+
+async function renderPokemon(pokemonName) {
+
+    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`);
+    const pokemon = await reponse.json();
+    
+    generatePokedex(pokemon);
+
+}
+
+
+const search = document.getElementById("search");
+const submit = document.getElementById("submit");
+
+submit.addEventListener("click", function(event) {
+
+    event.preventDefault();
+    const pokemon = search.value;
+    pokedex.innerHTML = "";
+    renderPokemon(pokemon);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+const selectGen = document.getElementById("gen");
+
+selectGen.addEventListener("change", function() {
+
+    if(selectGen.value > 0) {
+        getData(`https://pokebuildapi.fr/api/v1/pokemon/generation/${selectGen.value}`)
+    } else {
+        getData();
+    }
 });
 
 
@@ -129,6 +167,7 @@ btnReset.addEventListener("click", function() {
 
     getData();
     hideStats();
+    search.value.innerHTML = "";
 });
 
 
@@ -171,19 +210,4 @@ function hideStats() {
 
 btnStatsDisplayed.addEventListener("click", function() {
     hideStats();
-});
-
-
-const search = document.getElementById("search");
-
-search.addEventListener("keydown", function() {
-
-    const pokemon = search.value;
-    console.log(pokemon);
-
-    if(event.keyCode === 13){
-        pokedex.innerHTML = "";
-        console.log(pokemon);
-        getData(`https://pokebuildapi.fr/api/v1/pokemon/${pokemon}`);
-    }
 });
