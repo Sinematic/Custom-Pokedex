@@ -196,7 +196,7 @@ nav a:hover {
     border-bottom: 4px solid var(--alt-color);
 }
 
-button {
+button, select, input {
     border: 2px solid var(--alt-color);
     background-color: var(--main-color);
     font-family: 'Montserrat', sans-serif;
@@ -208,4 +208,23 @@ button {
 
 .hidden {
     display: none;
+}
+
+label {
+    position: relative;
+}
+
+#glass {
+    position: absolute;
+    bottom: 1px;
+    left: 15px;
+    color: var(--alt-color);
+}
+
+input::placeholder {
+    font-size: 16px;
+}
+
+input[type="search"] {
+    padding-left: 35px;
 }

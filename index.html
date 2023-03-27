@@ -9,6 +9,7 @@
     <link rel="icon" href="images/favicon.ico" /><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/56f1d6909e.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -42,7 +43,24 @@
                 <button id="btn-stats-displayed">Cacher les statistiques</button>
                 <button id="btn-stats-hidden">Afficher les statistiques</button>
                 <button id="reset">Réinitialiser les filtres</button>
-                <button id="gen-1">Afficher la première génération</button>
+        
+                <select name="gen" id="gen">
+                    <option id="all-gen" value="all">Afficher toutes les générations</option>
+                    <option id="gen-1" value="1">Afficher la première génération</option>
+                    <option id="gen-2" value="2">Afficher la deuxième génération</option>
+                    <option id="gen-3" value="3">Afficher la troisième génération</option>
+                    <option id="gen-4" value="4">Afficher la quatrième génération</option>
+                    <option id="gen-5" value="5">Afficher la cinquième génération</option>
+                    <option id="gen-6" value="6">Afficher la sixième génération</option>
+                    <option id="gen-7" value="7">Afficher la septième génération</option>
+                    <option id="gen-8" value="8">Afficher la huitième génération</option>
+                </select>
+
+                <label for="search">
+                    <i id="glass" class="fa-solid fa-magnifying-glass"></i>
+                    <input name="search" type="search" id="search" placeholder="Rechercher un pokémon">
+                </label>
+
             </section>
 
             <section id="pokedex">
