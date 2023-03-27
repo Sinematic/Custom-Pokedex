@@ -1,16 +1,16 @@
 const pokedex = document.getElementById("pokedex");
 
 const legendaries = [
-    144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 
+    144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 377, 378, 379, 380, 
     381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 
     638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 772, 
     773, 785, 786, 787, 788, 791, 792, 800, 888, 889, 890, 891, 892, 
     894, 895, 896, 897, 898];
 
 
-async function getData(url = "https://pokebuildapi.fr/api/v1/pokemon/") {
+async function getData(url = "pokemon/") {
 
-    const reponse = await fetch(url);
+    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/${url}`);
     const pokemons = await reponse.json();
 
     pokedex.innerHTML = "";
@@ -30,6 +30,21 @@ try {
 
     console.error(error);
 }
+
+
+const btnLegendaries = document.getElementById("btn-legendaries");
+
+btnLegendaries.addEventListener("click", async function() {
+    
+    pokedex.innerHTML = "";
+
+    for (let i = 0; i < legendaries.length; i++)
+    {
+        await retrievePokemon(legendaries[i]);
+    }
+    
+});
+
 
 function generatePokedex(pokemon) {
 
@@ -116,7 +131,8 @@ function generatePokedex(pokemon) {
 
 }
 
-async function renderPokemon(pokemonName) {
+
+async function retrievePokemon(pokemonName) {
 
     const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`);
     const pokemon = await reponse.json();
@@ -127,6 +143,7 @@ async function renderPokemon(pokemonName) {
 
 
 const search = document.getElementById("search");
+
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", function(event) {
@@ -134,19 +151,9 @@ submit.addEventListener("click", function(event) {
     event.preventDefault();
     const pokemon = search.value;
     pokedex.innerHTML = "";
-    renderPokemon(pokemon);
+    retrievePokemon(pokemon);
 
 });
-
-
-
-
-
-
-
-
-
-
 
 
 const selectGen = document.getElementById("gen");
@@ -154,7 +161,7 @@ const selectGen = document.getElementById("gen");
 selectGen.addEventListener("change", function() {
 
     if(selectGen.value > 0) {
-        getData(`https://pokebuildapi.fr/api/v1/pokemon/generation/${selectGen.value}`)
+        getData(`pokemon/generation/${selectGen.value}`)
     } else {
         getData();
     }
@@ -209,5 +216,13 @@ function hideStats() {
 }
 
 btnStatsDisplayed.addEventListener("click", function() {
+
     hideStats();
+});
+
+const random = document.getElementById("random");
+
+random.addEventListener("click", function() {
+
+    getData("random/team");
 });

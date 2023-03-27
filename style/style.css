@@ -23,16 +23,16 @@ body, header, div, nav, a, p, main , ul, ol, li, main, section, article, h1, h2,
 
 body {
     max-width: 1440px;
-    background-color: white;
     padding: 0px 4%;
     margin: auto;
     font-family: 'Montserrat', sans-serif;
+    background-color: var(--secondary-color);
     font-size: 16px;
 }
 
 #container {
     width: 100%;
-    background-color: var(--secondary-color);
+    background-color: white;
 }
 
 #navbar {
@@ -212,19 +212,25 @@ button, select, input {
 }
 
 button[type="submit"] {
-    padding: 12px 8px;
-    background-color: var(--alt-color);
+    padding: 12px 15px;
+    border-color: var(--alt-color);
 }
 
 #glass {
-    color: black;
+    color: var(--alt-color);
+    font-size: 22px;
 }
 
 input::placeholder {
     font-size: 16px;
 }
 
-input[type="search"] {
+#search {
     padding-left: 16px;
     margin-bottom: 15px;
+    border-color: var(--alt-color);
+}
+
+#search:focus {
+    outline: none;
 }
