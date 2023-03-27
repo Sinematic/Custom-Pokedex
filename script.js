@@ -8,110 +8,113 @@ const legendaries = [
     894, 895, 896, 897, 898];
 
 
-async function getData() {
+async function getData(array = []) {
 
-    const url = "https://pokebuildapi.fr/api/v1/pokemon";
-    const reponse = await fetch(url);
-    const pokemons = await reponse.json();
-    console.log(pokemons[0]);
+    const reponse = await fetch("https://pokebuildapi.fr/api/v1/pokemon");
+    const result = await reponse.json();
+    const pokemons = array.length > 0 ? array : result;
 
-    for (let i = 0; i <= pokemons.length -1; i++)
-    {
-        const card = document.createElement("article");
-        card.classList.add("pokemon-card");
-        card.setAttribute("id", `pokemon${pokemons[i].id}`);
-        card.setAttribute("data-gen", pokemons[i].apiGeneration);
-        card.setAttribute("data-legendary", false);
-        pokedex.appendChild(card);
+    for (let i = 0; i < pokemons.length; i++)
+        {
+            const index = array.length > 0 ? pokemons[array[i]] : pokemons[i];
+            const card = document.createElement("article");
+            card.classList.add("pokemon-card");
+            card.setAttribute("id", `pokemon${index.id}`);
+            card.setAttribute("data-gen", index.apiGeneration);
+            card.setAttribute("data-legendary", false);
+            pokedex.appendChild(card);
+    
+            const image = document.createElement("img");
+            image.src = index.image;
+            image.classList.add("pokemon-img");
+            card.appendChild(image);
+    
+            const name = document.createElement("h3");
 
-        console.log(card.getAttribute("data-gen"));
-
-        const image = document.createElement("img");
-        image.src = pokemons[i].image;
-        image.classList.add("pokemon-img");
-        card.appendChild(image);
-
-        const name = document.createElement("h3");
-        name.innerText = `${pokemons[i].name} (00${pokemons[i].pokedexId})`;
-        name.classList.add("pokemon-name");
-        card.appendChild(name);    
-
-        const types = document.createElement("p");
-        types.classList.add("pokemon-types");
-
-        const typesDiv = document.createElement("div");
-        typesDiv.classList.add("pokemon-types-div");
-
-        if (pokemons[i].apiTypes.length === 1) {
-
-            types.innerText = pokemons[i].apiTypes[0].name;
-
-            const typeImg = document.createElement("img");
-            typeImg.src = pokemons[i].apiTypes[0].image;
-            typeImg.classList.add("pokemon-types-img");
-            typesDiv.appendChild(typeImg);  
-
-        } else {
-
-            types.innerText = `${pokemons[i].apiTypes[0].name} - ${pokemons[i].apiTypes[1].name}`;
-
-            for(let i = 0; i < 2; i++)
-            {
-                const typeImg = document.createElement("img");
-                typeImg.src = pokemons[i].apiTypes[i].image;
-                typeImg.classList.add("pokemon-types-img");
-                typeImg.classList.add("pokemo-duo-types");
-                typesDiv.appendChild(typeImg);
+            if (index.pokedexId < 10) {
+    
+                name.innerText = `${index.name} (00${index.pokedexId})`;
+    
+            } else if (pokemons[i].pokedexId < 100) {
+    
+                name.innerText = `${pokemons[i].name} (0${index.pokedexId})`;
+            } else {
+    
+                name.innerText = `${index.name} (${index.pokedexId})`;
             }
-        }
-
-        card.appendChild(typesDiv);
-        card.appendChild(types);  
-  
-        const stats = document.createElement("ol");
-        stats.classList.add("pokemon-stats", "hidden");
-        card.appendChild(stats);
-
-        const HP = document.createElement("li");
-        HP.classList.add("pokemon-stat-li");
-        HP.innerText = `HP : ${pokemons[i].stats["HP"]}`;
-        stats.appendChild(HP);
-
-        const attack = document.createElement("li");
-        attack.classList.add("pokemon-stat-li");
-        attack.innerText = `Attaque : ${pokemons[i].stats["attack"]}`;
-        stats.appendChild(attack);
-
-        const defense = document.createElement("li");
-        defense.classList.add("pokemon-stat-li");
-        defense.innerText = `Défense : ${pokemons[i].stats["defense"]}`;
-        stats.appendChild(defense);
-
-        const specialAttack = document.createElement("li");
-        specialAttack.classList.add("pokemon-stat-li");
-        specialAttack.innerText = `Attaque spéciale : ${pokemons[i].stats["special_attack"]}`;
-        stats.appendChild(specialAttack);
-
-        const specialDefense = document.createElement("li");
-        specialDefense.classList.add("pokemon-stat-li");
-        specialDefense.innerText = `Défense spéciale : ${pokemons[i].stats["special_defense"]}`;
-        stats.appendChild(specialDefense);
-
-        const speed = document.createElement("li");
-        speed.classList.add("pokemon-stat-li");
-        speed.innerText = `Vitesse : ${pokemons[i].stats["speed"]}`;
-        stats.appendChild(speed);
+    
+            name.classList.add("pokemon-name");
+            card.appendChild(name);    
+    
+            const types = document.createElement("p");
+            types.classList.add("pokemon-types");
+    
+            const typesDiv = document.createElement("div");
+            typesDiv.classList.add("pokemon-types-div");
+    
+            if (index.apiTypes.length === 1) {
+    
+                types.innerText = index.apiTypes[0].name;
+    
+                const typeImg = document.createElement("img");
+                typeImg.src = index.apiTypes[0].image;
+                typeImg.classList.add("pokemon-types-img");
+                typesDiv.appendChild(typeImg);  
+    
+            } else {
+    
+                types.innerText = `${index.apiTypes[0].name} - ${index.apiTypes[1].name}`;
+    
+                for(let i = 0; i < 2; i++)
+                {
+                    const typeImg = document.createElement("img");
+                    typeImg.src = index.apiTypes[i].image;
+                    typeImg.classList.add("pokemon-types-img");
+                    typeImg.classList.add("pokemo-duo-types");
+                    typesDiv.appendChild(typeImg);
+                }
+            }
+    
+            card.appendChild(typesDiv);
+            card.appendChild(types);  
       
+            const stats = document.createElement("ol");
+            stats.classList.add("pokemon-stats", "hidden");
+            card.appendChild(stats);
+    
+            const HP = document.createElement("li");
+            HP.classList.add("pokemon-stat-li");
+            HP.innerText = `HP : ${index.stats["HP"]}`;
+            stats.appendChild(HP);
+    
+            const attack = document.createElement("li");
+            attack.classList.add("pokemon-stat-li");
+            attack.innerText = `Attaque : ${index.stats["attack"]}`;
+            stats.appendChild(attack);
+    
+            const defense = document.createElement("li");
+            defense.classList.add("pokemon-stat-li");
+            defense.innerText = `Défense : ${index.stats["defense"]}`;
+            stats.appendChild(defense);
+    
+            const specialAttack = document.createElement("li");
+            specialAttack.classList.add("pokemon-stat-li");
+            specialAttack.innerText = `Attaque spéciale : ${index.stats["special_attack"]}`;
+            stats.appendChild(specialAttack);
+    
+            const specialDefense = document.createElement("li");
+            specialDefense.classList.add("pokemon-stat-li");
+            specialDefense.innerText = `Défense spéciale : ${index.stats["special_defense"]}`;
+            stats.appendChild(specialDefense);
+    
+            const speed = document.createElement("li");
+            speed.classList.add("pokemon-stat-li");
+            speed.innerText = `Vitesse : ${index.stats["speed"]}`;
+            stats.appendChild(speed);
+    
     }
-
-    for (let i = 0; i <= legendaries.length -1; i++)
-    {
-        const card = document.getElementById(`pokemon${legendaries[i]}`);
-        card.setAttribute("data-legendary", 1);
-    }
-
-
 }
+
 
 try {
 
@@ -123,46 +126,44 @@ try {
 }
 
 
+const btnLegendary = document.getElementById("btn-legendaries");
+
 async function displayLegendaries() {
 
     const cards = document.querySelectorAll(".pokemon-card");
 
-    for (let i = 0; i <= cards.length; i++)
+    for (let i = 0; i < legendaries.length; i++)
     {
-        const card = document.getElementById(`pokemon${i}`);
+        const card = cards[`pokemon${legendaries[i]}`];
+        console.log(cards[legendaries[i]]);
         
-        console.log(card.getAttribute("data-gen"));
-/*
-        if (card.dataset("data-legendary") === true)
-        {
-            card.style.display = "block";
-        } else {
-            card.style.display = "else";
-        }*/
+
+        console.log(pokemon.dataset.legendary);
+        btnLegendary.addEventListener("click", function () {
+            const pokemonsFiltrees = cards.filter(function (card) {
+                return card.legendary > 0;
+            });
+
+            document.querySelector(".fiches").innerHTML = "";
+            genererPieces(piecesFiltrees);
+
+        });
     }
-
-/*
-    const stats = document.querySelectorAll(".pokemon-stats");
-
-    for (let i = 0; i < stats.length; i++)
-    {
-        stats[i].classList.add("hidden");
-    }
-
-    btnStatsHidden.style.display = "block";
-    btnStatsDisplayed.style.display = "none";*/
-
 }
 
 
-const btnLegendary = document.getElementById("btn-legendaries");
-
-btnLegendary.addEventListener("click", function() {
-    displayLegendaries();
+btnLegendary.addEventListener("click", async function() {
+    pokedex.innerHTML = "";
+    getData(legendaries);
 });
 
+
+
 const btnStatsHidden = document.getElementById("btn-stats-hidden");
-const btnStatsDisplayed = document.getElementById("btn-stats-displayed");
+
+btnStatsHidden.addEventListener("click", function() {
+    displayStats();
+});
 
 function displayStats() {
 
@@ -174,9 +175,12 @@ function displayStats() {
     }
 
     btnStatsHidden.style.display = "none";
-    btnStatsDisplayed.style.display = "block";
+    btnStatsDisplayed.style.display = "inline";
 
 }
+
+
+const btnStatsDisplayed = document.getElementById("btn-stats-displayed");
 
 function hideStats() {
 
@@ -187,29 +191,30 @@ function hideStats() {
         stats[i].classList.add("hidden");
     }
 
-    btnStatsHidden.style.display = "block";
+    btnStatsHidden.style.display = "inline";
     btnStatsDisplayed.style.display = "none";
 
 }
 
-btnStatsHidden.addEventListener("click", function() {
-    displayStats();
-});
-
 btnStatsDisplayed.addEventListener("click", function() {
     hideStats();
 });
-/*
-function displayFirstGen() {
 
-}*/
+
+
 
 const btnReset = document.getElementById("reset");
 
 btnReset.addEventListener("click", function() {
 
     getData();
+    hideStats();
 });
+
+
+
+
+const btnFirstGen = document.getElementById("gen-1");
 
 function displayGen(int) {
 
@@ -226,13 +231,11 @@ function displayGen(int) {
                 card.style.display = "none";
                 break;
             default:
-                card.style.display = "block";
+                card.style.display = "inline";
         }
     }
     
 }
-
-const btnFirstGen = document.getElementById("gen-1");
 
 btnFirstGen.addEventListener("click", function() {
     displayGen(1);
