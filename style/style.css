@@ -234,3 +234,8 @@ input::placeholder {
 #search:focus {
     outline: none;
 }
+
+.random-team {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+}

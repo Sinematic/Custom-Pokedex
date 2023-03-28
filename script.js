@@ -1,11 +1,11 @@
 const pokedex = document.getElementById("pokedex");
 
 const legendaries = [
-    144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 377, 378, 379, 380, 
-    381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 
-    638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 772, 
-    773, 785, 786, 787, 788, 791, 792, 800, 888, 889, 890, 891, 892, 
-    894, 895, 896, 897, 898];
+    144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 377, 378, 
+    379, 380, 381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 
+    486, 487, 488, 638, 639, 640, 641, 642, 643, 644, 645, 646,
+    716, 717, 718, 772, 773, 785, 786, 787, 788, 791, 792, 800, 
+    888, 889, 890, 891, 892, 894, 895, 896, 897, 898];
 
 
 async function getData(url = "pokemon/") {
@@ -35,6 +35,8 @@ try {
 const btnLegendaries = document.getElementById("btn-legendaries");
 
 btnLegendaries.addEventListener("click", async function() {
+    
+    reset();
     
     pokedex.innerHTML = "";
 
@@ -143,7 +145,6 @@ async function retrievePokemon(pokemonName) {
 
 
 const search = document.getElementById("search");
-
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", function(event) {
@@ -170,11 +171,18 @@ selectGen.addEventListener("change", function() {
 
 const btnReset = document.getElementById("reset");
 
-btnReset.addEventListener("click", function() {
+function reset() {
 
     getData();
-    hideStats();
+    hideStats(); 
+    pokedex.style.gridTemplateColumns = "repeat(4, 1fr)";
     search.value.innerHTML = "";
+
+}
+
+btnReset.addEventListener("click", function() {
+
+    reset();
 });
 
 
@@ -220,9 +228,11 @@ btnStatsDisplayed.addEventListener("click", function() {
     hideStats();
 });
 
+
 const random = document.getElementById("random");
 
 random.addEventListener("click", function() {
 
     getData("random/team");
+    pokedex.style.gridTemplateColumns = "repeat(3, 1fr)";
 });
