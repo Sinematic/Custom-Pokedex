@@ -5,7 +5,17 @@ const legendaries = [
     379, 380, 381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 
     486, 487, 488, 638, 639, 640, 641, 642, 643, 644, 645, 646,
     716, 717, 718, 772, 773, 785, 786, 787, 788, 791, 792, 800, 
-    888, 889, 890, 891, 892, 894, 895, 896, 897, 898];
+    888, 889, 890, 891, 892, 894, 895, 896, 897, 898
+];
+
+const selectGen = document.getElementById("gen");
+const btnLegendaries = document.getElementById("btn-legendaries");
+const search = document.getElementById("search");
+const submit = document.getElementById("submit");
+const btnReset = document.getElementById("reset");
+const btnStatsHidden = document.getElementById("btn-stats-hidden");
+const btnStatsDisplayed = document.getElementById("btn-stats-displayed");
+const random = document.getElementById("random");
 
 
 async function getData(url = "pokemon/") {
@@ -20,33 +30,8 @@ async function getData(url = "pokemon/") {
         generatePokedex(pokemons[i]);
         displayClickedPokemon(pokemons[i].pokedexId);
     }
+
 }
-
-
-try {
-
-    getData();
-
-} catch(error) {
-
-    console.error(error);
-}
-
-
-const btnLegendaries = document.getElementById("btn-legendaries");
-
-btnLegendaries.addEventListener("click", async function() {
-    
-    reset();
-    
-    pokedex.innerHTML = "";
-
-    for (let i = 0; i < legendaries.length; i++)
-    {
-        await retrievePokemon(legendaries[i]);
-    }
-    
-});
 
 
 function generatePokedex(pokemon) {
@@ -64,7 +49,7 @@ function generatePokedex(pokemon) {
     const name = document.createElement("h3");
     name.innerText = `${pokemon.name} (00${pokemon.pokedexId})`;
     name.classList.add("pokemon-name");
-    card.appendChild(name);    
+    card.appendChild(name);      
 
     const types = document.createElement("p");
     types.classList.add("pokemon-types");
@@ -132,8 +117,8 @@ function generatePokedex(pokemon) {
     speed.innerText = `Vitesse : ${pokemon.stats["speed"]}`;
     stats.appendChild(speed);
 
+    card.style.order = pokemon.pokedexId;
 }
-
 
 async function retrievePokemon(pokemonName) {
 
@@ -142,35 +127,75 @@ async function retrievePokemon(pokemonName) {
     
     generatePokedex(pokemon);
 
+    console.log(pokemon);
+
 }
 
+function displayClickedPokemon(id) {
 
-const search = document.getElementById("search");
-const submit = document.getElementById("submit");
+    const card = document.getElementById(`pokemon${id}`);
 
-submit.addEventListener("click", function(event) {
+    card.addEventListener("click", function() {
 
-    event.preventDefault();
-    const pokemon = search.value;
-    pokedex.innerHTML = "";
-    retrievePokemon(pokemon);
+        pokedex.innerHTML = "";
+        retrievePokemon(id);
+        displayStats();
+    
+        const xmark = document.createElement("i");
+        xmark.classList.add("fa-solid");
+        xmark.classList.add("fa-xmark");
+    
+        card.appendChild(xmark);
+            
+        searchforEvolutions(id);
+    });
+  
+}
 
-});
+function searchforEvolutions(id) {
 
+    hasPreEvolutions(id);
+    hasEvolutions(id);
+}
 
-const selectGen = document.getElementById("gen");
+async function hasEvolutions(id) {
 
-selectGen.addEventListener("change", function() {
+    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${id}`);
+    const pokemon = await reponse.json();
 
-    if(selectGen.value > 0) {
-        getData(`pokemon/generation/${selectGen.value}`)
-    } else {
-        getData();
+    if (pokemon.apiEvolutions !== "none") {
+
+        if (pokemon.apiEvolutions.length > 1) {
+    
+            for (let i = 0; i < pokemon.apiEvolutions.length; i++)
+            {
+                retrievePokemon(pokemon.apiEvolutions[i].name);
+                hasEvolutions(pokemon.apiEvolutions[i].pokedexId);
+            }
+                
+        } else {
+            console.log("je suis lu");
+            retrievePokemon(pokemon.apiEvolutions[0].name);
+            hasEvolutions(pokemon.apiEvolutions[0].pokedexId);
+
+        }
+       
     }
-});
 
+} 
 
-const btnReset = document.getElementById("reset");
+async function hasPreEvolutions(id) {
+
+    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${id}`);
+    const pokemon = await reponse.json();
+
+    if (pokemon.apiPreEvolution !== "none") {
+
+        retrievePokemon(pokemon.apiPreEvolution.name);
+        hasPreEvolutions(pokemon.apiPreEvolution.pokedexIdd);
+    }
+
+}
 
 function reset() {
 
@@ -180,18 +205,6 @@ function reset() {
     search.value = "";
 
 }
-
-btnReset.addEventListener("click", function() {
-
-    reset();
-});
-
-
-const btnStatsHidden = document.getElementById("btn-stats-hidden");
-
-btnStatsHidden.addEventListener("click", function() {
-    displayStats();
-});
 
 function displayStats() {
 
@@ -207,9 +220,6 @@ function displayStats() {
 
 }
 
-
-const btnStatsDisplayed = document.getElementById("btn-stats-displayed");
-
 function hideStats() {
 
     const stats = document.querySelectorAll(".pokemon-stats");
@@ -224,13 +234,21 @@ function hideStats() {
 
 }
 
+
+
+btnReset.addEventListener("click", function() {
+
+    reset();
+});
+
+btnStatsHidden.addEventListener("click", function() {
+    displayStats();
+});
+
 btnStatsDisplayed.addEventListener("click", function() {
 
     hideStats();
 });
-
-
-const random = document.getElementById("random");
 
 random.addEventListener("click", function() {
 
@@ -238,57 +256,55 @@ random.addEventListener("click", function() {
     pokedex.style.gridTemplateColumns = "repeat(3, 1fr)";
 });
 
-
-async function displayClickedPokemon(id) {
-
-    const card = document.getElementById(`pokemon${id}`);
-        
-    card.addEventListener("click", function() {
-
-        console.log(`Pokemon${id} cliqué`);
-        pokedex.innerHTML = "";
-        retrievePokemon(id);
-        displayStats();
-
-        const xmark = document.createElement("i");
-        xmark.classList.add("fa-solid");
-        xmark.classList.add("fa-xmark");
-
-        card.appendChild(xmark);
-        card.style.width = "40%"
-        
-        hasEvolutions(id);
-
-    });
+btnLegendaries.addEventListener("click", async function() {
     
-}
+    pokedex.innerHTML = "";
 
-async function hasEvolutions(id) {
-
-    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${id}`);
-    const pokemon = await reponse.json();
-
-    if(pokemon.apiPreEvolution) {
-        retrievePokemon(pokemon.apiPreEvolution.name);
+    for (let i = 0; i < legendaries.length; i++)
+    {
+        await retrievePokemon(legendaries[i]);
     }
+    
+});
 
-    if(pokemon.apiEvolutions) {
-        if(pokemon.apiEvolutions.length > 1) {
+submit.addEventListener("click", function(event) {
 
-            for (let i = 0; i < pokemon.apiEvolutions.length; i++)
-            {
-                retrievePokemon(pokemon.apiEvolutions[i].name);
-            }
-            
-        } else {
-            retrievePokemon(pokemon.apiEvolutions[0].name);
-        }
+    event.preventDefault();
+    const pokemon = search.value;
+    pokedex.innerHTML = "";
+    retrievePokemon(pokemon);
+
+});
+
+selectGen.addEventListener("change", function() {
+
+    if(selectGen.value > 0) {
+
+        getData(`pokemon/generation/${selectGen.value}`);
+
+    } else {
+        
+        getData();
     }
-} 
+});
+
+/*
 
 const xmark = document.querySelector("fa-xmark");
 
 xmark.addEventListener("click", function() {
+
     reset();
     getData();
 });
+*/
+
+
+try {
+
+    getData();
+
+} catch(error) {
+
+    console.error(error);
+}
