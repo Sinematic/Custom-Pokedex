@@ -54,8 +54,7 @@ nav {
     background-color: var(--theme-second-color);
     display: flex;
     justify-content: space-between;
-    border: 4px solid var(--theme-first-color);
-    border-top: none;
+    border-bottom: 4px solid var(--theme-first-color);
     color: black;
 }
 
@@ -180,19 +179,23 @@ nav a:hover {
     max-width: 100%;
     padding: 30px 10px;
     min-height: 75px;
-    background-color: var(--secondary-color);
-    border: 4px solid var(--alt-color);
+    background-color: var(--main-color);
+    border-top: 4px solid var(--alt-color);
     border-bottom: 4px solid var(--alt-color);
 }
 
 button, select, input {
     border: 2px solid black;
-    background-color: var(--main-color);
+    background-color: var(--secondary-color);
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     padding: 12px 8px;
     width: auto;
     border-radius: 15px;
+}
+
+button:hover, select:hover, input:hover {
+    background-color: var(--main-color);
 }
 
 .hidden {
@@ -223,14 +226,16 @@ input::placeholder {
     outline: none;
 }
 
+/*
+
 .fa-xmark {
     font-size: 18px;
     color: var(--alt-color);
     position: relative;
     right: 15px;
-    top: 15px;/*
-    z-index: 10;*/
 }
+
+*/
 
 .pokemon-card:hover {
     -webkit-box-shadow: 5px 5px 15px 5px #FF8080, 
