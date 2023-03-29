@@ -138,16 +138,9 @@ function displayClickedPokemon(id) {
     card.addEventListener("click", function() {
 
         pokedex.innerHTML = "";
-        retrievePokemon(id);
-        displayStats();
-    
-        const xmark = document.createElement("i");
-        xmark.classList.add("fa-solid");
-        xmark.classList.add("fa-xmark");
-    
-        card.appendChild(xmark);
-            
+        retrievePokemon(id);            
         searchforEvolutions(id);
+        displayStats();
     });
   
 }
@@ -287,18 +280,6 @@ selectGen.addEventListener("change", function() {
         getData();
     }
 });
-
-/*
-
-const xmark = document.querySelector("fa-xmark");
-
-xmark.addEventListener("click", function() {
-
-    reset();
-    getData();
-});
-*/
-
 
 try {
 
