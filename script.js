@@ -18,6 +18,7 @@ async function getData(url = "pokemon/") {
     for (let i = 0; i < pokemons.length; i++)
     {
         generatePokedex(pokemons[i]);
+        displayClickedPokemon(pokemons[i].pokedexId);
     }
 }
 
@@ -176,7 +177,7 @@ function reset() {
     getData();
     hideStats(); 
     pokedex.style.gridTemplateColumns = "repeat(4, 1fr)";
-    search.value.innerHTML = "";
+    search.value = "";
 
 }
 
@@ -235,4 +236,59 @@ random.addEventListener("click", function() {
 
     getData("random/team");
     pokedex.style.gridTemplateColumns = "repeat(3, 1fr)";
+});
+
+
+async function displayClickedPokemon(id) {
+
+    const card = document.getElementById(`pokemon${id}`);
+        
+    card.addEventListener("click", function() {
+
+        console.log(`Pokemon${id} cliqué`);
+        pokedex.innerHTML = "";
+        retrievePokemon(id);
+        displayStats();
+
+        const xmark = document.createElement("i");
+        xmark.classList.add("fa-solid");
+        xmark.classList.add("fa-xmark");
+
+        card.appendChild(xmark);
+        card.style.width = "40%"
+        
+        hasEvolutions(id);
+
+    });
+    
+}
+
+async function hasEvolutions(id) {
+
+    const reponse = await fetch(`https://pokebuildapi.fr/api/v1/pokemon/${id}`);
+    const pokemon = await reponse.json();
+
+    if(pokemon.apiPreEvolution) {
+        retrievePokemon(pokemon.apiPreEvolution.name);
+    }
+
+    if(pokemon.apiEvolutions) {
+        if(pokemon.apiEvolutions.length > 1) {
+
+            for (let i = 0; i < pokemon.apiEvolutions.length; i++)
+            {
+                retrievePokemon(pokemon.apiEvolutions[i].name);
+            }
+            
+        } else {
+            retrievePokemon(pokemon.apiEvolutions[0].name);
+        }
+    }
+} 
+
+const xmark = document.querySelector("fa-xmark");
+
+xmark.addEventListener("click", function() {
+    reset();
+    getData();
 });

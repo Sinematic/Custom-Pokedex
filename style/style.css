@@ -125,6 +125,7 @@ nav a:hover {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(auto, 200px);
     gap: 40px;
+    margin: auto;
 }
 
 .pokemon-card {
@@ -238,4 +239,13 @@ input::placeholder {
 .random-team {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
+}
+
+.fa-xmark {
+    font-size: 18px;
+    color: var(--alt-color);
+    position: relative;
+    right: 15px;
+    top: 15px;
+    z-index: 10;
 }
