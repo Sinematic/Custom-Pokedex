@@ -195,7 +195,7 @@ button, select, input {
 }
 
 button:hover, select:hover, input:hover {
-    background-color: var(--main-color);
+    background-color: var(--theme-second-color);
 }
 
 .hidden {
@@ -205,6 +205,15 @@ button:hover, select:hover, input:hover {
 button[type="submit"] {
     padding: 12px 15px;
     border-color: var(--alt-color);
+}
+
+#submit:hover {
+    color: rgb(52, 52, 52);
+    background-color: var(--alt-color);
+}
+
+#search:hover {
+    background-color: white;
 }
 
 #glass {
